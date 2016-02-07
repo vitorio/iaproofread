@@ -1,0 +1,43 @@
+<!doctype html>
+<html>
+<head>
+    <title></title>
+<style>
+    p, div { text-align: center; }
+    img.proof, span.proof { border: 1em black solid; padding: 1em; }
+    p.proof { padding: 2em; }
+    span.proof { font-weight: bold; }
+    input.proof { width: 40em; text-align: center; }
+    span.whiteout { display: none; }
+</style>
+</head>
+<body>
+
+<p>A computer thinks this picture:</p>
+<p><img id="proofimg" src="{{ a['name'] }}.png" usemap="#proofmap" class="proof"></p>
+<p>says this:</p>
+<p class="proof"><span class="proof">{{ a['fragment'] }}</span></p>
+<p>Does it?<br>
+(Spacing doesn't matter so much, but capitalization, punctuation, and spelling do!)</p>
+
+<p><button id="yes">Yes, that is exactly correct</button></p>
+
+<p><button id="correction">No, but I can type a correct version</button><span id="correctionfluid" class="whiteout"><br>
+<input type="text" value="{{ a['fragment'] }}" class="proof"><br>
+<input type="submit"></span></p>
+
+
+<p><button id="no">No, and I can't fix it</button></p>
+
+<map name="proofmap" id="proofmap">
+{% for b in a['words'] %}
+    <area shape="rect" coords="{{ b['x1'] }}, {{ b['y1'] }}, {{ b['x2'] }}, {{ b['y2'] }}" title="{{ b['word'] }}">
+{% endfor %}
+</map>
+<script>
+    document.getElementById('correction').onclick = function() {
+        document.getElementById('correctionfluid').className = '';
+    }
+</script>
+</body>
+</html>

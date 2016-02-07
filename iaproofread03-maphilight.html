@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+<head>
+    <title></title>
+<style>
+    p, div { text-align: center; }
+    div.proof, span.proof { border: 1em black solid; padding: 1em; }
+    div.proof, p.proof { padding: 2em; }
+    span.proof { font-weight: bold; }
+    input.proof { width: 30em; text-align: center; }
+    span.whiteout { display: none; }
+    area:hover { border: 1px red solid; }
+</style>
+</head>
+<body>
+
+<p>A computer thinks this picture:</p>
+<div class="proof"><img id="proofimg" src="1-0-0-0.png" usemap="#proofmap" class="proof"></div>
+<p>says this:</p>
+<p class="proof"><span class="proof">NY PUBLIC LIBRARY THE BRANCH LIBRARIES</span></p>
+<p>Does it?<br>
+(Spacing doesn't matter so much, but capitalization, punctuation, and spelling do!)</p>
+
+<p><button id="yes">Yes, that is exactly correct</button></p>
+
+<p><button id="correction">No, but I can type a correct version</button><span id="correctionfluid" class="whiteout"><br>
+<input type="text" value="NY PUBLIC LIBRARY THE BRANCH LIBRARIES" class="proof"><br>
+<input type="submit"></span></p>
+
+
+<p><button id="no">No, and I can't fix it</button></p>
+
+<map name="proofmap" id="proofmap">
+	<area shape="rect" coords="0, 0, 50, 23" title="NY">
+	<area shape="rect" coords="70, 0, 200, 23" title="PUBLIC">
+</map>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<script src="http://davidlynch.org/projects/maphilight/jquery.maphilight.min.js"></script>
+<script>
+    document.getElementById('correction').onclick = function() {
+        document.getElementById('correctionfluid').className = '';
+    }
+   	$('#proofimg').maphilight();
+</script>
+</body>
+</html>

@@ -1,0 +1,99 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+<style>
+    p, div { text-align: center; }
+    img.proof { max-width: 90%; }
+    img.proof, span.proof { padding: 16px; }
+    img.proof, span.proof, span.proofb { border: 16px black solid; }
+    span.proof { white-space: nowrap; }
+    span.proofb { padding: 32px 16px; }
+    p.proof { margin: 3em 0; }
+    input.proof { vertical-align: middle; }
+    .whiteout { display: none; }
+</style>
+</head>
+<body>
+
+<div id="question">
+<p>A computer thinks this picture:</p>
+<p><img id="proofimg" src="{{ a['name'] }}.png" class="proof" width="{{ a['fragment']['width'] }}" alt="{{ a['fragment']['unicodeinputtext'] }}"></p>
+<p>says this:</p>
+<p class="proof"><span id="prooftxt" class="proof">{{ a['fragment']['unicodetext'] }}</span></p>
+<p>Does it?<br>
+(Formatting doesn't matter so much, but capitalization, punctuation, and spelling should match.)</p>
+
+<p><button id="yes">Yes, that is exactly correct</button></p>
+
+<p><button id="correction">No, but I can type a correct version</button></p>
+
+<p><button id="no1">I can't tell</button></p>
+</div>
+
+<div id="answer" class="whiteout">
+<p>You said, &ldquo;No, but I can type a correct version&rdquo;</p>
+<p><img id="proofimg2" src="{{ a['name'] }}.png" class="proof" width="{{ a['fragment']['width'] }}" alt="{{ a['fragment']['unicodeinputtext'] }}"></p>
+<p>Please fix the text in this box so it says what the image does:</p>
+<p class="proof"><span class="proofb"><input id="prooffix" type="text" value="{{ a['fragment']['unicodeinputtext'] }}" class="proof"></span></p>
+<p>(Formatting doesn't matter so much, but capitalization, punctuation, and spelling should match.)</p>
+
+<p><button id="ok">Okay, it's fixed</button></p>
+
+<p><button id="no2">I can't fix it</button></p>
+</div>
+
+<div id="canttell" class="whiteout">
+<p>You said, &ldquo;I can't tell&rdquo; or &ldquo;I can't fix it&rdquo;</p>
+<p><img id="proofimg3" src="{{ a['name'] }}.png" class="proof" width="{{ a['fragment']['width'] }}" alt="{{ a['fragment']['unicodeinputtext'] }}"></p>
+<p class="proof"><span id="prooftxt3" class="proof">{{ a['fragment']['unicodetext'] }}</span></p>
+<p>Why not?</p>
+
+<p>Please choose a reason:<br>
+<select id="excuses" name="excuses" required>
+    <option value="illegible">The image is too hard to read</option>
+    <option value="foreign">The image has letters or numbers that aren't on my keyboard</option>
+    <option value="nottext">The image isn't a picture of letters or numbers, it's something else</option>
+    <option value="other">There's some other reason</option>
+</select></p>
+
+<p>Please provide additional detail, especially if you chose &ldquo;There's some other reason&rdquo;:<br>
+<textarea cols="40" rows="5"></textarea></p>
+
+<p><button id="no3">Send your reason</button></p>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<script src="jquery.hacked-quickfit.js"></script>
+<script>
+$(window).on('resize', function() {
+    proofwidth = $('#proofimg').width();
+    proofwidth2 = $('#proofimg2').width();
+    proofwidth3 = $('#proofimg3').width();
+    proofheight = $('#prooffix').height();
+    $('#prooftxt').quickfit({ max: 200, truncate: false, width: proofwidth - ~~(proofwidth/90) });
+    $('#prooffix').quickfit({ max: 200, truncate: false, width: proofwidth2 - ~~(proofwidth2/90) });
+    $('#prooftxt3').quickfit({ max: 200, truncate: false, width: proofwidth3 - ~~(proofwidth3/90) });
+    $('span.proofb').css('line-height', proofheight + 'px');
+    $('span.proofb').css('padding-top', ~~(proofheight / 2) + 'px');
+    $('span.proofb').css('padding-bottom', ~~(proofheight / 2) + 'px');
+    $('#prooffix').width(proofwidth2 - ~~(proofwidth2/90));
+});
+$('#correction').on('click', function() {
+    $('#question').hide();
+    $('#answer').fadeIn();
+    $(window).trigger('resize');
+});
+$('#no1, #no2').on('click', function() {
+    $('#question, #answer').hide();
+    $('#canttell').fadeIn();
+    $(window).trigger('resize');
+});
+$(function() {
+    $('#excuses').prop('selectedIndex', -1);
+    $(window).trigger('resize');
+});
+</script>
+</body>
+</html>
